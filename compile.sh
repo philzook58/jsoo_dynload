@@ -1,7 +1,8 @@
 #ocamlfind ocamlc -g  -package js_of_ocaml -package js_of_ocaml-toplevel -linkpkg dynlink.cma mymain.ml -o mymain.o #-package js_of_ocaml -package js_of_ocaml.toplevel 
 #js_of_ocaml --pretty --toplevel --dynlink +toplevel.js +dynlink.js -I . mymain.o -o mymain.js
-ocamlfind ocamlc -g  -package js_of_ocaml,js_of_ocaml-toplevel -linkpkg dynlink.cma mymain.ml -o mymain.o #-package js_of_ocaml -package js_of_ocaml.toplevel 
-js_of_ocaml --pretty --toplevel --dynlink +toplevel.js +dynlink.js -I . mymain.o -o mymain.js
+ocamlfind ocamlc -g  -package dynlink,js_of_ocaml-toplevel -linkpkg mymain.ml -o mymain.out #-package js_of_ocaml -package js_of_ocaml.toplevel 
+#js_of_ocaml --pretty --toplevel --dynlink +toplevel.js +dynlink.js -I . mymain.o -o mymain.js
+js_of_ocaml --pretty --file ./plugin.cmo --dynlink +dynlink.js --toplevel +toplevel.js --extern-fs -I . mymain.out -o mymain.js
 #ocamlc plugin.ml
 #ocamlfind ocamlc -g  -package js_of_ocaml -package js_of_ocaml-toplevel -linkpkg dynlink.cma mymain.ml
 #js_of_ocaml --dynlink mymain.cmo -o mymain.js

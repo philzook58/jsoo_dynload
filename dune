@@ -1,0 +1,33 @@
+;(executable
+; (name mymain)
+; (modules mymain)
+; (modes byte js)
+; (js_of_ocaml
+ ; (flags :standard --pretty --noinline --disable shortvar --debug-info --dynlink +dynlink.js +toplevel.js --setenv PATH=/bin))
+; (link_flags -linkall -no-check-prims)
+ ; The old makefile set: -noautolink -no-check-prims
+; (libraries dynlink)
+; )
+(executable
+ (name mymain)
+ (modules mymain)
+ (libraries dynlink js_of_ocaml-toplevel)
+ (modes byte))
+
+(rule
+ (target mymain.js)
+ (deps plugin.cmo)
+ (action
+  (run
+   %{bin:js_of_ocaml}
+   --dynlink
+   +dynlink.js
+   --toplevel
+   +toplevel.js
+   -I
+   ./
+   --file
+   ./plugin.cmo
+   -o
+   %{target}
+   %{dep:mymain.bc})))
